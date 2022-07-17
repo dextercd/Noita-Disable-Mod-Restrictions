@@ -1,0 +1,4 @@
+<Mod
+    name="Modded Records"
+    description="Store your new records despite using mods!"
+    request_no_api_restrictions="1" />
