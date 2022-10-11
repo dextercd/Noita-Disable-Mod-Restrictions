@@ -43,6 +43,12 @@ local modifications = {
     },
 
     {
+        key = "gods_are_afraid",
+        name = ">1 Million damage message",
+        description = "Enables 'The Gods are afraid' message and achievement when you do over 1 million damage."
+    },
+
+    {
         key = "gods_are_very_curious",
         name = "Negative health message",
         description = "Enables the 'The Gods are very curious' message when your health is below zero.",

@@ -93,6 +93,14 @@ local game_modifications = {
         },
     },
 
+    gods_are_afraid = {
+        {
+            location = ffi.cast("void*", 0x00983c8c),
+            original = ffi.new("char[6]", {0x0f, 0x85, 0x17, 0x01, 0x00, 0x00}),
+            patch_bytes = nop6,
+        },
+    },
+
     gods_are_very_curious = {
         {
             location = ffi.cast("void*", 0x00aa4337),
