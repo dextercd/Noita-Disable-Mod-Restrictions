@@ -59,7 +59,6 @@ local game_modifications = {
 
     bones = {
         {
-            -- Crash if wands have custom spells?
             location = ffi.cast("void*", 0x006416b4),
             original = ffi.new("char[6]", {0x0f, 0x87, 0x29, 0x01, 0x00, 0x00}),
             patch_bytes = nop6,
