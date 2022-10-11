@@ -30,7 +30,9 @@ local modifications = {
 
         It's sad that you don't know the difference.
 
-        lol ]]
+        ↑↑↑ lol, imagine actually thinking this way ↑↑↑
+        Just play the game however you want and have fun!
+        ]]
     },
 
     {
