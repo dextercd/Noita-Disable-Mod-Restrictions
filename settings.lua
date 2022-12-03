@@ -4,6 +4,12 @@ local mod_id = "disable-mod-restrictions"
 
 local modifications = {
     {
+        key = "intro",
+        name = "Intro sequence",
+        description = "Remove check that prevents the intro sequence from playing.",
+    },
+
+    {
         key = "records",
         name = "Records",
         description = "Track new gameplay records such as time, gold, max hp, etc..",

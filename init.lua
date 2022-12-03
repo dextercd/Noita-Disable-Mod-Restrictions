@@ -20,6 +20,14 @@ local nop6 = ffi.new("char[6]", {0x66, 0x0f, 0x1f, 0x44, 0x00, 0x00})
 local test_non_zero2 = ffi.new("char[2]", {0x85, 0xe4})
 
 local game_modifications = {
+    intro = {
+        {
+            location = ffi.cast("void*", 0x006370e7),
+            original = ffi.new("char[6]", {0x2b, 0x0d, 0x24, 0x1b, 0xff, 0x00}),
+            patch_bytes = ffi.new("char[6]", {0xb9, 0x01, 0x00, 0x00, 0x00, 0x90}),
+        },
+    },
+
     records = {
         {
             location = ffi.cast("void*", 0x009c1b00),
