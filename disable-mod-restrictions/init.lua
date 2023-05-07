@@ -1,7 +1,7 @@
 -- Seeker of knowledge? :^)
 
 local mod_id = "disable-mod-restrictions"
-function setting_get(name)
+local function setting_get(name)
     return ModSettingGet(mod_id .. "." .. name)
 end
 
@@ -12,7 +12,27 @@ ffi.cdef([[
 bool VirtualProtect(void* adress, size_t size, int new_protect, int* old_protect);
 int memcmp(const void *buffer1, const void *buffer2, size_t count);
 
+unsigned long GetCurrentDirectoryA(unsigned long nBufferLength, char* lpBuffer);
+
 ]])
+
+function get_cwd()
+    local buffer = ffi.new("char[2000]")
+    local ret = ffi.C.GetCurrentDirectoryA(ffi.sizeof(buffer), buffer)
+    if ret ~= 0 then
+        return ffi.string(buffer, ret)
+    end
+    return nil
+end
+
+function print_array(ptr, len)
+    local str = {}
+    ptr = ffi.cast("unsigned char*", ptr)
+    for i=0,len-1 do
+        table.insert(str, ("%02x"):format(ptr[i]))
+    end
+    return table.concat(str, ", ")
+end
 
 local nop2 = ffi.new("char[2]", {0x66, 0x90})
 local nop6 = ffi.new("char[6]", {0x66, 0x0f, 0x1f, 0x44, 0x00, 0x00})
@@ -147,6 +167,9 @@ end
 -- Compare enabled vs. desired and reconfigure to desired.
 
 function configure_desired_modifications()
+
+    print("CWD", get_cwd())
+
     local enabled = get_enabled_modifications()
     local desired = get_desired_modifications()
 
@@ -190,6 +213,9 @@ end
 function patch_location(location, expect, patch_bytes)
     if ffi.C.memcmp(location, expect, ffi.sizeof(expect)) ~= 0 then
         print("Unexpected instructions at location.")
+        print("  Expected: ", print_array(expect, ffi.sizeof(expect)))
+        print("  Actual:   ", print_array(location, ffi.sizeof(expect)))
+        print()
         return false
     end
 
