@@ -223,7 +223,7 @@ end
 
 function patch_location(location, expect, patch_bytes)
     if ffi.C.memcmp(location, expect, ffi.sizeof(expect)) ~= 0 then
-        print("Unexpected instructions at location.")
+        print("Unexpected instructions at location: ", tostring(location))
         print("  Expected: ", print_array(expect, ffi.sizeof(expect)))
         print("  Actual:   ", print_array(location, ffi.sizeof(expect)))
         print()
