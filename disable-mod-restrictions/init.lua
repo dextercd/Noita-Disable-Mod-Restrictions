@@ -13,12 +13,22 @@ bool VirtualProtect(void* adress, size_t size, int new_protect, int* old_protect
 int memcmp(const void *buffer1, const void *buffer2, size_t count);
 
 unsigned long GetCurrentDirectoryA(unsigned long nBufferLength, char* lpBuffer);
+unsigned long GetModuleFileNameA(void* hModule, const char* lpFilename, unsigned long nSize);
 
 ]])
 
 function get_cwd()
     local buffer = ffi.new("char[2000]")
     local ret = ffi.C.GetCurrentDirectoryA(ffi.sizeof(buffer), buffer)
+    if ret ~= 0 then
+        return ffi.string(buffer, ret)
+    end
+    return nil
+end
+
+function get_module_name()
+    local buffer = ffi.new("char[2000]")
+    local ret = ffi.C.GetModuleFileNameA(nil, buffer, ffi.sizeof(buffer))
     if ret ~= 0 then
         return ffi.string(buffer, ret)
     end
@@ -168,7 +178,8 @@ end
 
 function configure_desired_modifications()
 
-    print("CWD", get_cwd())
+    print("CWD", tostring(get_cwd()))
+    print("MOD", tostring(get_module_name()))
 
     local enabled = get_enabled_modifications()
     local desired = get_desired_modifications()
