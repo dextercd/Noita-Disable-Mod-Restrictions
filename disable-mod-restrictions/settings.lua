@@ -10,14 +10,9 @@ local modifications = {
     },
 
     {
-        key = "records",
-        name = "Records",
-        description = "Track new gameplay records such as time, gold, max hp, etc..",
-    },
-    {
         key = "streaks",
-        name = "Track streaks",
-        description = "Track win streaks and display them on the game over screen.",
+        name = "Streaks and records",
+        description = "Track win streaks and records and display them on the game over screen.",
     },
 
     {
@@ -25,19 +20,14 @@ local modifications = {
         name = "Steam Achievements",
         description = "Get Steam Achievements despite having mods active.",
         --[[
-        You cheated not only the game, but yourself.
-
-        You didn't grow.
-        You didn't improve.
-        You took a shortcut and gained nothing.
-
-        You experienced a hollow victory.
-        Nothing was risked and nothing was gained.
-
-        It's sad that you don't know the difference.
-
-        ↑↑↑ lol, imagine actually thinking this way ↑↑↑
-        Just play the game however you want and have fun!
+               XX
+              XOXX
+              XXXO
+             XXOXX
+             X XX X
+            X  X  X
+            X  X  X
+            X  X  X
         ]]
     },
 

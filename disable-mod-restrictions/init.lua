@@ -58,14 +58,6 @@ local game_modifications = {
         },
     },
 
-    records = {
-        {
-            location = ffi.cast("void*", 0x009c6a90),
-            original = ffi.new("char[2]", {0x77, 0x1b}),
-            patch_bytes = ffi.new("char[2]", {0xeb, 0x2c}),
-        },
-    },
-
     achievements = {
         { -- By name
             location = ffi.cast("void*", 0x0076fe12),
@@ -104,6 +96,13 @@ local game_modifications = {
     },
 
     streaks = {
+        -- Records
+        {
+            location = ffi.cast("void*", 0x009c6a90),
+            original = ffi.new("char[2]", {0x77, 0x1b}),
+            patch_bytes = ffi.new("char[2]", {0xeb, 0x2c}),
+        },
+        -- Stats
         {
             location = ffi.cast("void*", 0x0063f04c),
             original = ffi.new("char[2]", {0x74, 0x25}),
