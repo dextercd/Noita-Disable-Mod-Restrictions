@@ -52,28 +52,28 @@ local test_non_zero2 = ffi.new("char[2]", {0x85, 0xe4})
 local game_modifications = {
     intro = {
         {
-            location = ffi.cast("void*", 0x0061e327),
-            original = ffi.new("char[6]", {0x2b, 0x0d, 0x74, 0x76, 0x00, 0x01}),
+            location = ffi.cast("void*", 0x0061ff77),
+            original = ffi.new("char[6]", {0x2b, 0x0d, 0xac, 0x69, 0x01, 0x01}),
             patch_bytes = ffi.new("char[6]", {0xb9, 0x01, 0x00, 0x00, 0x00, 0x90}),
         },
     },
 
     achievements = {
         { -- By name
-            location = ffi.cast("void*", 0x007659b2),
-            original = ffi.new("char[2]", {0xa1, 0x90}),
+            location = ffi.cast("void*", 0x0076af62),
+            original = ffi.new("char[2]", {0xa1, 0xd4}),
             patch_bytes = ffi.new("char[2]", {0xeb, 0x1f}),
         },
         { -- By ID
-            location = ffi.cast("void*", 0x00765a52),
-            original = ffi.new("char[2]", {0xa1, 0x90}),
+            location = ffi.cast("void*", 0x0076b002),
+            original = ffi.new("char[2]", {0xa1, 0xd4}),
             patch_bytes = ffi.new("char[2]", {0xeb, 0x1f}),
         },
     },
 
     cauldron = {
         {
-            location = ffi.cast("void*", 0x005c2077),
+            location = ffi.cast("void*", 0x005c28d7),
             original = ffi.new("char[6]", {0x0f, 0x85, 0x41, 0x07, 0x00, 0x00}),
             patch_bytes = nop6,
         },
@@ -81,7 +81,7 @@ local game_modifications = {
 
     eyes = {
         {
-            location = ffi.cast("void*", 0x005add15),
+            location = ffi.cast("void*", 0x005ae575),
             original = ffi.new("char[6]", {0x0f, 0x85, 0x9d, 0x01, 0x00, 0x00}),
             patch_bytes = nop6,
         },
@@ -89,7 +89,7 @@ local game_modifications = {
 
     bones = {
         {
-            location = ffi.cast("void*", 0x00628b14),
+            location = ffi.cast("void*", 0x0062ab74),
             original = ffi.new("char[6]", {0x0f, 0x87, 0x29, 0x01, 0x00, 0x00}),
             patch_bytes = nop6,
         }
@@ -98,33 +98,33 @@ local game_modifications = {
     streaks = {
         -- Records
         {
-            location = ffi.cast("void*", 0x009d5050),
+            location = ffi.cast("void*", 0x009dd412),
             original = ffi.new("char[2]", {0x77, 0x1b}),
             patch_bytes = ffi.new("char[2]", {0xeb, 0x2c}),
         },
         -- Stats
         {
-            location = ffi.cast("void*", 0x0062182c),
+            location = ffi.cast("void*", 0x006237ec),
             original = ffi.new("char[2]", {0x74, 0x25}),
             patch_bytes = nop2,
         },
         {
-            location = ffi.cast("void*", 0x0065380e),
+            location = ffi.cast("void*", 0x0065585e),
             original = ffi.new("char[2]", {0x84, 0xc0}),
             patch_bytes = test_non_zero2,
         },
         {
-            location = ffi.cast("void*", 0x009d4660),
+            location = ffi.cast("void*", 0x009dca20),
             original = ffi.new("char[2]", {0x84, 0xc0}),
             patch_bytes = test_non_zero2,
         },
         {
-            location = ffi.cast("void*", 0x009d4677),
+            location = ffi.cast("void*", 0x009dca37),
             original = ffi.new("char[2]", {0x84, 0xc0}),
             patch_bytes = test_non_zero2,
         },
         {
-            location = ffi.cast("void*", 0x009d500c),
+            location = ffi.cast("void*", 0x009dd3cc),
             original = ffi.new("char[2]", {0x84, 0xc0}),
             patch_bytes = test_non_zero2,
         },
@@ -132,7 +132,7 @@ local game_modifications = {
 
     gods_are_afraid = {
         {
-            location = ffi.cast("void*", 0x00996df8),
+            location = ffi.cast("void*", 0x0099ef6b),
             original = ffi.new("char[6]", {0x0f, 0x85, 0x17, 0x01, 0x00, 0x00}),
             patch_bytes = nop6,
         },
@@ -140,8 +140,8 @@ local game_modifications = {
 
     gods_are_very_curious = {
         {
-            location = ffi.cast("void*", 0x00abdb57),
-            original = ffi.new("char[6]", {0x0f, 0x85, 0x77, 0x01, 0x00, 0x00}),
+            location = ffi.cast("void*", 0x00ac7a74),
+            original = ffi.new("char[6]", {0x0f, 0x85, 0x7d, 0x01, 0x00, 0x00}),
             patch_bytes = nop6,
         },
     },
@@ -221,6 +221,11 @@ function configure_modification(modification, enable)
 end
 
 function patch_location(location, expect, patch_bytes)
+    if ffi.C.memcmp(location, patch_bytes, ffi.sizeof(expect)) == 0 then
+        -- Already patched
+        return
+    end
+
     if ffi.C.memcmp(location, expect, ffi.sizeof(expect)) ~= 0 then
         print("Unexpected instructions at location: ", tostring(location))
         print("  Expected: ", print_array(expect, ffi.sizeof(expect)))
@@ -250,11 +255,24 @@ function patch_location(location, expect, patch_bytes)
     return true
 end
 
-
--- Initial configuration when you start a run.
-
-patch_location(ffi.cast("void*", 0x00e3b864),
+--[[
+       XX
+      XOXX
+      XXXO
+     XXOXX
+     X XX X
+    X  X  X
+    X  X  X
+    X  X  X
+]]
+patch_location(ffi.cast("void*", 0x00e481cc),
     ffi.new("char[19]", {0x24, 0x6d, 0x65, 0x6e, 0x75, 0x70, 0x61, 0x75, 0x73, 0x65, 0x5f, 0x6d, 0x6f, 0x64, 0x73, 0x75, 0x73, 0x65, 0x64}),
     ffi.new("char[19]", {0x24, 0x61, 0x6e, 0x69, 0x6d, 0x61, 0x6c, 0x5f, 0x6c, 0x6f, 0x6e, 0x67, 0x6c, 0x65, 0x67, 0x00, 0x00, 0x00, 0x00}))
+
+patch_location(ffi.cast("void*", 0x00e482d4),
+    ffi.new("char[17]", {0x24, 0x73, 0x74, 0x61, 0x74, 0x5f, 0x6d, 0x6f, 0x64, 0x73, 0x65, 0x6e, 0x61, 0x62, 0x6c, 0x65, 0x64}),
+    ffi.new("char[17]", {0x24, 0x61, 0x6e, 0x69, 0x6d, 0x61, 0x6c, 0x5f, 0x6c, 0x6f, 0x6e, 0x67, 0x6c, 0x65, 0x67, 0x00, 0x00}))
+
+-- Initial configuration when you start a run.
 
 configure_desired_modifications()

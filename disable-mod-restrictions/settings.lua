@@ -8,48 +8,32 @@ local modifications = {
         name = "Intro sequence",
         description = "Remove check that prevents the intro sequence from playing.",
     },
-
     {
         key = "streaks",
         name = "Streaks and records",
         description = "Track win streaks and records and display them on the game over screen.",
     },
-
     {
         key = "achievements",
         name = "Steam Achievements",
         description = "Get Steam Achievements despite having mods active.",
-        --[[
-               XX
-              XOXX
-              XXXO
-             XXOXX
-             X XX X
-            X  X  X
-            X  X  X
-            X  X  X
-        ]]
     },
-
     {
         key = "bones",
         name = "Create new bones files. (new wands for Ghosts/Apparitions)",
         description = "Allow bones files to be created while having mods active.",
         disclaimer = "This will cause ghosts to spawn with incomplete wands if you later disable mods that add spells.",
     },
-
     {
         key = "gods_are_afraid",
         name = ">1 Million damage message",
         description = "Enables 'The Gods are afraid' message and achievement when you do over 1 million damage."
     },
-
     {
         key = "gods_are_very_curious",
         name = "Negative health message",
         description = "Enables the 'The Gods are very curious' message when your health is below zero.",
     },
-
     {
         key = "cauldron",
         name = "Cauldron secret",
