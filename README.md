@@ -1,6 +1,6 @@
 # Disable Mod Restrictions
 
-> ⚠️ NOTE: This repository is update irregularly. Check the modworkshop post for the latest version.
+> ⚠️ NOTE: This repository is updated irregularly. Check the modworkshop post for the latest version.
 
 Noita mod that reenables features that are normally disabled when playing with mods.
 
