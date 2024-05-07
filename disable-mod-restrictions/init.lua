@@ -1,3 +1,5 @@
+dofile_once("data/scripts/lib/utilities.lua")
+
 -- Seeker of knowledge? :^)
 
 local mod_id = "disable-mod-restrictions"
@@ -52,28 +54,28 @@ local test_non_zero2 = ffi.new("char[2]", {0x85, 0xe4})
 local game_modifications = {
     intro = {
         {
-            location = ffi.cast("void*", 0x0061ff77),
-            original = ffi.new("char[6]", {0x2b, 0x0d, 0xac, 0x69, 0x01, 0x01}),
+            location = ffi.cast("void*", 0x006ac307),
+            original = ffi.new("char[6]", {0x2b, 0x0d, 0x1c, 0x5e, 0x20, 0x01}),
             patch_bytes = ffi.new("char[6]", {0xb9, 0x01, 0x00, 0x00, 0x00, 0x90}),
         },
     },
 
     achievements = {
         { -- By name
-            location = ffi.cast("void*", 0x0076af62),
-            original = ffi.new("char[2]", {0xa1, 0xd4}),
+            location = ffi.cast("void*", 0x00846d42),
+            original = ffi.new("char[2]", {0xa1, 0x90}),
             patch_bytes = ffi.new("char[2]", {0xeb, 0x1f}),
         },
         { -- By ID
-            location = ffi.cast("void*", 0x0076b002),
-            original = ffi.new("char[2]", {0xa1, 0xd4}),
+            location = ffi.cast("void*", 0x00846de2),
+            original = ffi.new("char[2]", {0xa1, 0x90}),
             patch_bytes = ffi.new("char[2]", {0xeb, 0x1f}),
         },
     },
 
     cauldron = {
         {
-            location = ffi.cast("void*", 0x005c28d7),
+            location = ffi.cast("void*", 0x00634187),
             original = ffi.new("char[6]", {0x0f, 0x85, 0x41, 0x07, 0x00, 0x00}),
             patch_bytes = nop6,
         },
@@ -81,7 +83,7 @@ local game_modifications = {
 
     eyes = {
         {
-            location = ffi.cast("void*", 0x005ae575),
+            location = ffi.cast("void*", 0x0061fd15),
             original = ffi.new("char[6]", {0x0f, 0x85, 0x9d, 0x01, 0x00, 0x00}),
             patch_bytes = nop6,
         },
@@ -89,8 +91,8 @@ local game_modifications = {
 
     bones = {
         {
-            location = ffi.cast("void*", 0x0062ab74),
-            original = ffi.new("char[6]", {0x0f, 0x87, 0x29, 0x01, 0x00, 0x00}),
+            location = ffi.cast("void*", 0x006b7955),
+            original = ffi.new("char[6]", {0x0f, 0x85, 0x29, 0x01, 0x00, 0x00}),
             patch_bytes = nop6,
         }
     },
@@ -98,33 +100,38 @@ local game_modifications = {
     streaks = {
         -- Records
         {
-            location = ffi.cast("void*", 0x009dd412),
+            location = ffi.cast("void*", 0x00b174c2),
             original = ffi.new("char[2]", {0x77, 0x1b}),
             patch_bytes = ffi.new("char[2]", {0xeb, 0x2c}),
         },
+        {
+            location = ffi.cast("void*", 0x00b15e45),
+            original = ffi.new("char[2]", {0x84, 0xc0}),
+            patch_bytes = test_non_zero2,
+        },
         -- Stats
         {
-            location = ffi.cast("void*", 0x006237ec),
-            original = ffi.new("char[2]", {0x74, 0x25}),
+            location = ffi.cast("void*", 0x006afc53),
+            original = ffi.new("char[2]", {0x74, 0x28}),
             patch_bytes = nop2,
         },
         {
-            location = ffi.cast("void*", 0x0065585e),
+            location = ffi.cast("void*", 0x006e5e7e),
             original = ffi.new("char[2]", {0x84, 0xc0}),
             patch_bytes = test_non_zero2,
         },
         {
-            location = ffi.cast("void*", 0x009dca20),
+            location = ffi.cast("void*", 0x00b16ad0),
             original = ffi.new("char[2]", {0x84, 0xc0}),
             patch_bytes = test_non_zero2,
         },
         {
-            location = ffi.cast("void*", 0x009dca37),
+            location = ffi.cast("void*", 0x00b16ae7),
             original = ffi.new("char[2]", {0x84, 0xc0}),
             patch_bytes = test_non_zero2,
         },
         {
-            location = ffi.cast("void*", 0x009dd3cc),
+            location = ffi.cast("void*", 0x00b1747c),
             original = ffi.new("char[2]", {0x84, 0xc0}),
             patch_bytes = test_non_zero2,
         },
@@ -132,7 +139,7 @@ local game_modifications = {
 
     gods_are_afraid = {
         {
-            location = ffi.cast("void*", 0x0099ef6b),
+            location = ffi.cast("void*", 0x00ab889b),
             original = ffi.new("char[6]", {0x0f, 0x85, 0x17, 0x01, 0x00, 0x00}),
             patch_bytes = nop6,
         },
@@ -140,7 +147,7 @@ local game_modifications = {
 
     gods_are_very_curious = {
         {
-            location = ffi.cast("void*", 0x00ac7a74),
+            location = ffi.cast("void*", 0x00c40e54),
             original = ffi.new("char[6]", {0x0f, 0x85, 0x7d, 0x01, 0x00, 0x00}),
             patch_bytes = nop6,
         },
@@ -199,6 +206,7 @@ function configure_desired_modifications()
                 " couldn't be configured to desired state: " ..
                 tostring(desired[name])
             )
+            warn_compatibility()
         end
     end
 end
@@ -265,13 +273,74 @@ end
     X  X  X
     X  X  X
 ]]
-patch_location(ffi.cast("void*", 0x00e481cc),
+patch_location(ffi.cast("void*", 0x010101d0),
     ffi.new("char[19]", {0x24, 0x6d, 0x65, 0x6e, 0x75, 0x70, 0x61, 0x75, 0x73, 0x65, 0x5f, 0x6d, 0x6f, 0x64, 0x73, 0x75, 0x73, 0x65, 0x64}),
     ffi.new("char[19]", {0x24, 0x61, 0x6e, 0x69, 0x6d, 0x61, 0x6c, 0x5f, 0x6c, 0x6f, 0x6e, 0x67, 0x6c, 0x65, 0x67, 0x00, 0x00, 0x00, 0x00}))
 
-patch_location(ffi.cast("void*", 0x00e482d4),
+patch_location(ffi.cast("void*", 0x01010320),
     ffi.new("char[17]", {0x24, 0x73, 0x74, 0x61, 0x74, 0x5f, 0x6d, 0x6f, 0x64, 0x73, 0x65, 0x6e, 0x61, 0x62, 0x6c, 0x65, 0x64}),
     ffi.new("char[17]", {0x24, 0x61, 0x6e, 0x69, 0x6d, 0x61, 0x6c, 0x5f, 0x6c, 0x6f, 0x6e, 0x67, 0x6c, 0x65, 0x67, 0x00, 0x00}))
+
+
+
+-- Compatibility warning UI
+
+-- Only want to show it once per run
+local compatibility_warning_shown = false
+local gui
+
+function warn_compatibility()
+ if compatibility_warning_shown then
+  return
+ end
+ compatibility_warning_shown = true
+
+ OnWorldPreUpdate = function()
+  gui = gui or GuiCreate()
+  GuiStartFrame(gui)
+
+  local dismiss = false
+
+  GuiBeginAutoBox(gui)
+   GuiLayoutBeginVertical(gui, 30, 40)
+    GuiColorSetForNextWidget(gui, 1, .2, .2, 1)
+    GuiText(gui, 0, 0, "Warning!")
+
+    GuiText(gui, 0, 0, table.concat({
+     "One or more 'disable-mod-restrictions' patches could not be applied.",
+     "The mod is probably not compatible with this version of Noita. Check",
+     "the modworkshop page occassionally for updates."}, "\n"))
+
+    GuiLayoutAddVerticalSpacing(gui, 5)
+
+    GuiText(gui, 0, 0, table.concat({
+     "New versions are usually released within a couple days after a main",
+     "branch update."}, "\n"))
+
+    GuiLayoutAddVerticalSpacing(gui, 5)
+
+    GuiLayoutBeginHorizontal(gui, 0, 0)
+     if GuiButton(gui, 2, 0, 0, "[Open Modworkshop]") then
+      dofile_once("mods/disable-mod-restrictions/win32.lua").open("https://modworkshop.net/mod/38530")
+     end
+
+     GuiLayoutAddHorizontalSpacing(gui)
+     dismiss = GuiButton(gui, 3, 0, 0, "[Dismiss]")
+    GuiLayoutEnd(gui)
+
+   GuiLayoutEnd(gui)
+
+  GuiZSetForNextWidget(gui, 10)
+  GuiEndAutoBoxNinePiece(gui)
+
+  if dismiss then
+   GuiDestroy(gui)
+   gui = nil
+   OnWorldPreUpdate = nil
+  end
+ end
+end
+
 
 -- Initial configuration when you start a run.
 
