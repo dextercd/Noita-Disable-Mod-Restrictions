@@ -273,14 +273,28 @@ end
     X  X  X
     X  X  X
 ]]
-patch_location(ffi.cast("void*", 0x010101d0),
-    ffi.new("char[19]", {0x24, 0x6d, 0x65, 0x6e, 0x75, 0x70, 0x61, 0x75, 0x73, 0x65, 0x5f, 0x6d, 0x6f, 0x64, 0x73, 0x75, 0x73, 0x65, 0x64}),
-    ffi.new("char[19]", {0x24, 0x61, 0x6e, 0x69, 0x6d, 0x61, 0x6c, 0x5f, 0x6c, 0x6f, 0x6e, 0x67, 0x6c, 0x65, 0x67, 0x00, 0x00, 0x00, 0x00}))
+local path = '\x64\x61\x74\x61\x2f\x74\x72\x61\x6e\x73\x6c\x61\x74\x69\x6f\x6e\x73\x2f\x63\x6f\x6d\x6d\x6f\x6e\x2e\x63\x73\x76'
+local text = _G['\x4d\x6f\x64\x54\x65\x78\x74\x46\x69\x6c\x65\x47\x65\x74\x43\x6f\x6e\x74\x65\x6e\x74'](path)
+local item = text:match('\x61\x6e\x69\x6d\x61\x6c\x5f\x6c\x6f\x6e\x67\x6c\x65\x67\x2c\x2e\x2d\x0a')
+local entries = {}
+item:gsub('([^,]*),', function(x)
+    if x == '' then x = entries[2] end
+    table.insert(entries, x)
+end)
 
-patch_location(ffi.cast("void*", 0x01010320),
-    ffi.new("char[17]", {0x24, 0x73, 0x74, 0x61, 0x74, 0x5f, 0x6d, 0x6f, 0x64, 0x73, 0x65, 0x6e, 0x61, 0x62, 0x6c, 0x65, 0x64}),
-    ffi.new("char[17]", {0x24, 0x61, 0x6e, 0x69, 0x6d, 0x61, 0x6c, 0x5f, 0x6c, 0x6f, 0x6e, 0x67, 0x6c, 0x65, 0x67, 0x00, 0x00}))
+local function entry_patch(x)
+  local idx = 1
+  return x:gsub('(, *).-([:\xef])', function(y, z)
+    idx = idx + 1
+    return y..entries[idx]..z
+  end)
+end
 
+local updated = text
+    :gsub('\x6d\x65\x6e\x75\x70\x61\x75\x73\x65\x5f\x6d\x6f\x64\x73\x75\x73\x65\x64\x2c\x2e\x2d\x0a', entry_patch)
+    :gsub('\x73\x74\x61\x74\x5f\x6d\x6f\x64\x73\x65\x6e\x61\x62\x6c\x65\x64\x2c\x2e\x2d\x0a', entry_patch)
+
+_G['\x4d\x6f\x64\x54\x65\x78\x74\x46\x69\x6c\x65\x53\x65\x74\x43\x6f\x6e\x74\x65\x6e\x74'](path, updated)
 
 
 -- Compatibility warning UI
