@@ -1,9 +1,5 @@
 # Disable Mod Restrictions
 
-> ⚠️ NOTE: This repository is updated irregularly. Check the modworkshop post for the latest version.
+Archived in favour of an approach that doesn't require unsafe mode and works on the GOG version.
 
-Noita mod that reenables features that are normally disabled when playing with mods.
-
-Download here: https://modworkshop.net/mod/38530 See the 'Downloads' tab for other versions (e.g. Noita beta)
-
-This version only works with the Steam version. Someone else made a port for GOG: https://discord.com/channels/453998283174576133/1096171782865698857
+You can get it here: https://modworkshop.net/mod/38530
